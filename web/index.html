@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Pack Optimizer</title>
+</head>
+<body>
+<h1>Pack Optimizer</h1>
+<form id="form">
+    <label for="items">Enter number of items:</label>
+    <input type="number" id="items" required />
+    <button type="submit">Calculate</button>
+</form>
+<pre id="result"></pre>
+
+<script>
+    const form = document.getElementById("form");
+    const result = document.getElementById("result");
+
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const items = parseInt(document.getElementById("items").value, 10);
+        try {
+            const res = await fetch("/calculate", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ items })
+            });
+
+            const data = await res.json();
+            result.textContent = JSON.stringify(data, null, 2);
+        } catch (err) {
+            result.textContent = "Error: " + err;
+        }
+    });
+</script>
+</body>
+</html>
